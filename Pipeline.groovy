@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git 'https://github.com/Akshat2920/ScientificCalcMiniProject' 
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip install -r requirements.txt || true'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                sh 'python3 -m py_compile ScientificCalculator.py'
+            }
+        }
+
+        stage('Run Python Tests') {
+            steps {
+                sh 'python3 -m unittest discover -s . -p "Test*.py"'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "Build and Tests Successful!"
+        }
+        failure {
+            echo "Build or Tests Failed!"
+        }
+    }
+}
