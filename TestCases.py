@@ -7,7 +7,7 @@ class TestScientificCalculator(unittest.TestCase):
     def test_square_root(self):
         self.assertAlmostEqual(ScientificCalculator.square_root(4), 2.0)
         self.assertAlmostEqual(ScientificCalculator.square_root(9), 3.0)
-        self.assertAlmostEqual(ScientificCalculator.square_root(25), 5.0)
+        self.assertAlmostEqual(ScientificCalculator.square_root(36), 6.0)
         with self.assertRaises(ValueError):
             ScientificCalculator.square_root(-1)
 
