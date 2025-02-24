@@ -3,7 +3,7 @@ import math
 class ScientificCalculator:
     @staticmethod
     def square_root(x):
-        if x<0:
+        if x < 0:
             raise ValueError("Square root of negative number is not allowed")
         return math.sqrt(x)
 
