@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE_NAME = 'scientific-calculator'  // Local image name
-        DOCKER_TAG = 'akshat2911/scientificCalculator:latest'  // Full Docker Hub tag
+        DOCKER_TAG = 'akshat2911/scientific-calculator:latest'  // Full Docker Hub tag
         GITHUB_REPO_URL = 'https://github.com/Akshat2920/ScientificCalcMiniProject'
         DOCKER_CREDENTIALS_ID = 'DockerHubCred'  // Ensure this matches Jenkins credentials ID
     }
