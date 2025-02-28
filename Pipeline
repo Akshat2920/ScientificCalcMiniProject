@@ -59,6 +59,7 @@ pipeline {
         stage('Cleanup Docker Images') {
             steps {
                 sh "/usr/local/bin/docker rmi ${DOCKER_IMAGE_NAME} || true"
+                sh "/usr/local/bin/docker rmi ${DOCKER_TAG} || true"
                 sh "/usr/local/bin/docker system prune -f || true"
             }
         }
