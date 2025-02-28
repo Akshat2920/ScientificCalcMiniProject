@@ -1,0 +1,35 @@
+---
+- name: Deploy Scientific Calculator Docker Container
+  hosts: target_servers  # Define target servers in inventory
+  become: yes  # Run as sudo
+
+  tasks:
+    - name: Ensure Docker is installed
+      package:
+        name: docker
+        state: present
+
+    - name: Start Docker service
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Log in to Docker Hub
+      command: docker login -u akshat2911 -p "{{ docker_password }}"
+      environment:
+        HOME: "/root"
+
+    - name: Pull the latest Docker image
+      command: docker pull akshat2911/scientific-calculator:latest
+
+    - name: Stop and remove any existing container
+      command: docker rm -f scientific_calculator
+      ignore_errors: yes  # Ignore errors if the container does not exist
+
+    - name: Run the Docker container
+      command: >
+        docker run -d --name scientific_calculator -p 5000:5000 akshat2911/scientific-calculator:latest
+
+    - name: Ensure the container is running
+      command: docker ps
