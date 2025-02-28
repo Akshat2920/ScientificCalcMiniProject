@@ -28,7 +28,7 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh '/usr/local/bin/docker build -t akshat2920/scientific-calculator:latest .'
+                sh '/usr/local/bin/docker build -t ${DOCKER_IMAGE_NAME} .'
             }
         }
 
