@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator</title>
+    <script>
+        async function calculate() {
+            const operation = document.getElementById("operation").value;
+            let data = {};
+
+            if (operation === "power") {
+                data = {
+                    base: parseFloat(document.getElementById("base").value),
+                    exponent: parseFloat(document.getElementById("exponent").value)
+                };
+            } else {
+                data = { number: parseFloat(document.getElementById("number").value) };
+            }
+
+            try {
+                const response = await fetch(`http://localhost:5000/${operation}`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                document.getElementById("result").innerText = result.result ?? result.error;
+            } catch (error) {
+                document.getElementById("result").innerText = "Error connecting to API";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Scientific Calculator</h2>
+
+    <label for="operation">Select Operation:</label>
+    <select id="operation" onchange="toggleInputs()">
+        <option value="square-root">Square Root</option>
+        <option value="factorial">Factorial</option>
+        <option value="natural-log">Natural Log</option>
+        <option value="power">Power</option>
+    </select>
+
+    <div id="numberInput">
+        <label for="number">Enter Number:</label>
+        <input type="number" id="number">
+    </div>
+
+    <div id="powerInputs" style="display: none;">
+        <label for="base">Base:</label>
+        <input type="number" id="base">
+        <label for="exponent">Exponent:</label>
+        <input type="number" id="exponent">
+    </div>
+
+    <button onclick="calculate()">Calculate</button>
+
+    <h3>Result: <span id="result">---</span></h3>
+
+    <script>
+        function toggleInputs() {
+            const operation = document.getElementById("operation").value;
+            document.getElementById("numberInput").style.display = operation === "power" ? "none" : "block";
+            document.getElementById("powerInputs").style.display = operation === "power" ? "block" : "none";
+        }
+    </script>
+</body>
+</html>
