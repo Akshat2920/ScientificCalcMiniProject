@@ -1,5 +1,11 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_IMAGE_NAME = 'scientificCalculator'
+        DOCKER_TAG = 'akshat2911/scientificCalculator:latest'
+        GITHUB_REPO_URL = 'https://github.com/Akshat2920/ScientificCalcMiniProject'
+        DOCKER_CREDENTIALS_ID = 'DockerHubCred'  // Ensure correct Jenkins credential ID
+    }
 
     stages {
         stage('Checkout Code') {
