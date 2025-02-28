@@ -51,7 +51,8 @@ pipeline {
         }
 
         stage('Push Docker Image') {
-            steps {
+            steps {    
+                sh "/usr/local/bin/docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_TAG}"
                 sh "/usr/local/bin/docker push ${DOCKER_TAG}"  // Push the correctly tagged image
             }
         }
