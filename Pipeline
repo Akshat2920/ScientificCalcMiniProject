@@ -1,16 +1,17 @@
 pipeline {
     agent any
+
     environment {
-        DOCKER_IMAGE_NAME = 'scientific-calculator'
-        DOCKER_TAG = 'akshat2911/scientificCalculator:latest'
+        DOCKER_IMAGE_NAME = 'scientific-calculator'  // Local image name
+        DOCKER_TAG = 'akshat2911/scientificCalculator:latest'  // Full Docker Hub tag
         GITHUB_REPO_URL = 'https://github.com/Akshat2920/ScientificCalcMiniProject'
-        DOCKER_CREDENTIALS_ID = 'DockerHubCred'  // Ensure correct Jenkins credential ID
+        DOCKER_CREDENTIALS_ID = 'DockerHubCred'  // Ensure this matches Jenkins credentials ID
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/Akshat2920/ScientificCalcMiniProject' 
+                git "${GITHUB_REPO_URL}"
             }
         }
 
@@ -19,7 +20,7 @@ pipeline {
                 sh 'pip install -r requirements.txt || true'
             }
         }
-        
+
         stage('Build Python Code') {
             steps {
                 sh 'python3 -m py_compile ScientificCalculator.py'
@@ -34,7 +35,8 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                sh '/usr/local/bin/docker build -t ${DOCKER_IMAGE_NAME} .'
+                sh "/usr/local/bin/docker build -t ${DOCKER_IMAGE_NAME} ."
+                sh "/usr/local/bin/docker tag ${DOCKER_IMAGE_NAME} ${DOCKER_TAG}"  // Tag for Docker Hub
             }
         }
 
@@ -48,24 +50,25 @@ pipeline {
 
         stage('Push Docker Image') {
             steps {
-                sh '/usr/local/bin/docker push akshat2920/scientific-calculator:latest'
+                sh "/usr/local/bin/docker push ${DOCKER_TAG}"  // Push the correctly tagged image
             }
         }
 
         stage('Cleanup Docker Images') {
             steps {
-                sh '/usr/local/bin/docker rmi akshat2920/scientific-calculator:latest || true'
-                sh '/usr/local/bin/docker system prune -f || true'
+                sh "/usr/local/bin/docker rmi ${DOCKER_IMAGE_NAME} || true"
+                sh "/usr/local/bin/docker rmi ${DOCKER_TAG} || true"
+                sh "/usr/local/bin/docker system prune -f || true"
             }
         }
     }
 
     post {
         success {
-            echo "Build, Tests, and Docker Push Successful! 🚀"
+            echo "✅ Build, Tests, and Docker Push Successful! 🚀"
         }
         failure {
-            echo "Build or Tests Failed! ❌"
+            echo "❌ Build or Tests Failed! Check logs for details."
         }
     }
 }
