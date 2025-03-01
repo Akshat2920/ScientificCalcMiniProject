@@ -1,5 +1,5 @@
 # Use an official lightweight Python image
-FROM python:3.9.6
+FROM python:3.11
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -10,6 +10,7 @@ COPY . .
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install and enable SSH for Ansible
 RUN apt-get update && apt-get install -y openssh-server && \
     mkdir /var/run/sshd && \
     echo 'root:root' | chpasswd && \
@@ -17,9 +18,8 @@ RUN apt-get update && apt-get install -y openssh-server && \
     sed -i 's@session required pam_loginuid.so@session optional pam_loginuid.so@g' /etc/pam.d/sshd && \
     echo "export VISIBLE=now" >> /etc/profile
 
-
 # Expose necessary ports
 EXPOSE 5000 22
 
-# Start SSH service and the Flask app
-CMD ["/bin/bash", "-c", "/usr/sbin/sshd && python app.py"]
+# Start SSH service and the Flask app properly
+CMD service ssh start && python ScientificCalculator.py
