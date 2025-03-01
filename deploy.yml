@@ -31,4 +31,4 @@
           - "5000:5000"
 
     - name: Ensure the container is running
-      command: docker ps
+      command: /usr/local/bin/docker ps
