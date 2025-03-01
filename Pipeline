@@ -68,6 +68,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'SUDO_PASSWORD', variable: 'SUDO_PASS')]) {
                     sh '''
+                        source /Users/akshatlal/.ansible-env/bin/activate
                         /Users/akshatlal/Library/Python/3.9/bin/ansible-playbook -i inventory deploy.yml --extra-vars "ansible_become_pass=$SUDO_PASS"
                     '''
                 }
