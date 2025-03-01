@@ -4,6 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scientific Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .calculator {
+            background: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 80vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2 {
+            margin-bottom: 20px;
+        }
+        select, input, button {
+            width: calc(100% - 24px);
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 18px;
+        }
+        select {
+            font-size: 18px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+    </style>
     <script>
         async function calculate() {
             const operation = document.getElementById("operation").value;
@@ -31,41 +84,40 @@
                 document.getElementById("result").innerText = "Error connecting to API";
             }
         }
-    </script>
-</head>
-<body>
-    <h2>Scientific Calculator</h2>
 
-    <label for="operation">Select Operation:</label>
-    <select id="operation" onchange="toggleInputs()">
-        <option value="square-root">Square Root</option>
-        <option value="factorial">Factorial</option>
-        <option value="natural-log">Natural Log</option>
-        <option value="power">Power</option>
-    </select>
-
-    <div id="numberInput">
-        <label for="number">Enter Number:</label>
-        <input type="number" id="number">
-    </div>
-
-    <div id="powerInputs" style="display: none;">
-        <label for="base">Base:</label>
-        <input type="number" id="base">
-        <label for="exponent">Exponent:</label>
-        <input type="number" id="exponent">
-    </div>
-
-    <button onclick="calculate()">Calculate</button>
-
-    <h3>Result: <span id="result">---</span></h3>
-
-    <script>
         function toggleInputs() {
             const operation = document.getElementById("operation").value;
             document.getElementById("numberInput").style.display = operation === "power" ? "none" : "block";
             document.getElementById("powerInputs").style.display = operation === "power" ? "block" : "none";
         }
     </script>
+</head>
+<body>
+    <div class="calculator">
+        <h2>Scientific Calculator</h2>
+        <label for="operation">Select Operation:</label>
+        <select id="operation" onchange="toggleInputs()">
+            <option value="square-root">Square Root</option>
+            <option value="factorial">Factorial</option>
+            <option value="natural-log">Natural Log</option>
+            <option value="power">Power</option>
+        </select>
+
+        <div id="numberInput">
+            <label for="number">Enter Number:</label>
+            <input type="number" id="number">
+        </div>
+
+        <div id="powerInputs" style="display: none;">
+            <label for="base">Base:</label>
+            <input type="number" id="base">
+            <label for="exponent">Exponent:</label>
+            <input type="number" id="exponent">
+        </div>
+
+        <button onclick="calculate()">Calculate</button>
+
+        <div class="result">Result: <span id="result">---</span></div>
+    </div>
 </body>
 </html>
