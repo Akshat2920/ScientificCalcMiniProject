@@ -1,0 +1,34 @@
+- name: Deploy Scientific Calculator Docker Container
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install required Ansible collections
+      ansible.builtin.command: ansible-galaxy collection install community.docker
+
+    - name: Log in to Docker Hub
+      docker_login:
+        username: "akshat2911"
+        password: "Akshat@#123"
+
+    - name: Pull the latest Docker image
+      community.docker.docker_image:
+        name: "akshat2911/scientific-calculator"
+        tag: latest
+        source: pull
+
+    - name: Stop and remove any existing container
+      docker_container:
+        name: scientific_calculator
+        state: absent
+
+    - name: Run the Docker container
+      docker_container:
+        name: scientific_calculator
+        image: "akshat2911/scientific-calculator:latest"
+        state: started
+        restart_policy: always
+        published_ports:
+          - "5000:5000"
+
+    - name: Ensure the container is running
+      command: docker ps
