@@ -63,6 +63,12 @@ pipeline {
                 sh "/usr/local/bin/docker system prune -f || true"
             }
         }
+
+        stage('Deploy using Ansible') {
+            steps {
+                sh 'ansible-playbook -i inventory deploy.yml'
+            }
+        }
     }
 
     post {
